@@ -156,7 +156,10 @@ export function getSystemStats(): SystemStats {
     ram: memUsage(),
     swap: swapUsage(),
     storage: storageUsage(),
-    uptime: os.uptime(),
+    // process.uptime(), not os.uptime(): in Docker/Railway os.uptime()
+    // reads the shared host kernel's /proc/uptime (months old), while
+    // process.uptime() is the time since this Node panel process started.
+    uptime: Math.floor(process.uptime()),
     ip: { address: ipInfo.ip, location: ipInfo.location, isp: ipInfo.isp },
     xray: { running: isRunning(), version: coreVersion(), uptime: coreUptime() },
   };
