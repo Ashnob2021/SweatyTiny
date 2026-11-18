@@ -16,9 +16,10 @@ import {
   MapPin,
   Wifi,
   Copy,
+  Clock,
 } from "lucide-react";
 import { api, exportBackupUrl } from "@/lib/api";
-import { formatBytes, pct, cn, d } from "@/lib/utils";
+import { formatBytes, formatUptime, pct, cn, d } from "@/lib/utils";
 import { useToast } from "@/components/ui/toast";
 import { useI18n } from "@/lib/i18n";
 import { Button } from "@/components/ui/button";
@@ -46,7 +47,7 @@ function StatCard({
   label: string;
   value: string;
   sub: string;
-  progress: number;
+  progress?: number;
   accent: string;
 }) {
   return (
@@ -69,7 +70,7 @@ function StatCard({
           </div>
         </div>
         <div className="mt-4">
-          <Progress value={progress} indicatorClassName="" />
+          {progress !== undefined && <Progress value={progress} indicatorClassName="" />}
           <div className="mt-2 text-xs font-base text-text/60">{sub}</div>
         </div>
       </CardContent>
@@ -218,7 +219,14 @@ export default function DashboardPage() {
 
       {s && <ServerInfoCard s={s} />}
 
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+        <StatCard
+          icon={Clock}
+          label={t("uptime")}
+          value={formatUptime(s?.uptime ?? 0)}
+          sub={`Xray ${formatUptime(s?.xray.uptime ?? 0)}`}
+          accent="#c084fc"
+        />
         <StatCard
           icon={Cpu}
           label={t("cpu")}
