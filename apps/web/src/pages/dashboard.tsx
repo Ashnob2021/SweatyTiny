@@ -223,8 +223,8 @@ export default function DashboardPage() {
         <StatCard
           icon={Clock}
           label={t("uptime")}
-          value={formatUptime(s?.uptime ?? 0)}
-          sub={`Xray ${formatUptime(s?.xray.uptime ?? 0)}`}
+          value={formatUptime(s?.xray.uptime ?? 0)}
+          sub={s?.xray.version ? `Xray ${s.xray.version}` : "Xray"}
           accent="#c084fc"
         />
         <StatCard
